@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+         Welcome to AMMU'S store where you can buys different items....
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+          {{category.name}} - AMMU's store
+    {% else %}
+           see our New Collections - AMMU's Store
+
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+      <div>
+          <div class="row_my_row_class">
+              <div class="mx_auto">
+              <p>
+                  <a href="{% url 'shop:allProdCat' %}"> Our Product Collections</a> | {{category.name}}
+              </p>
+               </div>
+          </div>
+      </div>
+      {% endif %}
+<div class="mx_auto">
+    {% if category %}
+      <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+</div>
+    <br>
+<div>
+       <h1 class="text-center my_little">{{category.name}}</h1>
+       <p class="text-justify">{{category.description}}</p>
+</div>
+   {% else %}
+<div>
+<img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="our products" width="1350px;">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">Our products Collections</h1>
+    <p class="text-justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. <b>Aenean massa.</b> Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, <i>pretium quis</i>, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet <strong>a, venenatis vitae, </strong>justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. <mark>Aenean vulputate eleifend tellus.</mark> Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra<small> quis, feugiat</small> a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. <a  href="Nam.html">Nam</a> quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,</p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="col-sm-3" >
+            <div class="card border-dark mb-3" style="max-width: 18rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top" style="width:15.8rem;" height="350px;" src="{{product.image.url}}" alt="{{ product.name}}" ></a>
+
+
+                <div class="card-body text-dark">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+              </div>
+
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <div class="text-center">
+            {% for pg in products.paginator.page_range  %}
+                    <a href="?page={{pg}}" class="btn btn-light btn-sm  {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
